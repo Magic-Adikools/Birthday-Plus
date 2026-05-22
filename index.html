@@ -1,0 +1,1748 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday+</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f2f4f7;
+  --surface: #ffffff;
+  --surface2: #f8f9fb;
+  --primary: #1a73e8;
+  --primary-light: #e8f0fe;
+  --primary-dark: #1557b0;
+  --text: #202124;
+  --text2: #5f6368;
+  --text3: #80868b;
+  --border: #e0e0e0;
+  --red: #ea4335;
+  --green: #34a853;
+  --orange: #fa7b17;
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+  --card-shadow-hover: 0 4px 12px rgba(0,0,0,0.15);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-lg: 24px;
+  --reminder-bg: linear-gradient(135deg,#fff3e0,#fff8f0);
+  --reminder-border: #ffe0b2;
+  --badge-today-bg: #fef3cd; --badge-today-c: #b06000;
+  --badge-soon-bg: #fce8e6; --badge-soon-c: #ea4335;
+  --badge-week-bg: #fff3e0; --badge-week-c: #fa7b17;
+  --badge-month-bg: #e6f4ea; --badge-month-c: #34a853;
+  --backup-bg: #e6f4ea; --backup-c: #34a853; --backup-sub: #5a9168;
+}
+[data-theme="dark"] {
+  --bg: #0f1117;
+  --surface: #1e2130;
+  --surface2: #252a3a;
+  --primary: #4d9fff;
+  --primary-light: #1a2a4a;
+  --primary-dark: #76b5ff;
+  --text: #e8eaed;
+  --text2: #9aa0ab;
+  --text3: #6c7480;
+  --border: #2e3347;
+  --red: #ff6b6b;
+  --green: #4eca6e;
+  --orange: #ffaa45;
+  --card-shadow: 0 1px 4px rgba(0,0,0,0.4), 0 1px 3px rgba(0,0,0,0.3);
+  --card-shadow-hover: 0 4px 16px rgba(0,0,0,0.5);
+  --reminder-bg: linear-gradient(135deg,#2a1f0f,#251a0a);
+  --reminder-border: #3d2a0a;
+  --badge-today-bg: #3a2e00; --badge-today-c: #ffd54f;
+  --badge-soon-bg: #3a1a1a; --badge-soon-c: #ff6b6b;
+  --badge-week-bg: #2e1f00; --badge-week-c: #ffaa45;
+  --badge-month-bg: #0f2a18; --badge-month-c: #4eca6e;
+  --backup-bg: #0f2218; --backup-c: #4eca6e; --backup-sub: #3a9a5a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Nunito', sans-serif; min-height: 100vh; transition: background 0.3s, color 0.3s; }
+
+.appbar {
+  background: var(--surface);
+  padding: 0 20px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.appbar-left { display: flex; align-items: center; gap: 12px; }
+.app-icon {
+  width: 40px; height: 40px;
+  background: linear-gradient(135deg, #1a73e8, #4285f4);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 2px 8px rgba(26,115,232,0.4);
+}
+.app-title { font-size: 20px; font-weight: 800; color: var(--text); letter-spacing: -0.3px; }
+.app-title span { color: var(--primary); }
+.appbar-actions { display: flex; gap: 8px; }
+.icon-btn {
+  width: 40px; height: 40px;
+  border: none; background: none;
+  border-radius: 50%; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: var(--text2);
+  transition: background 0.2s; padding: 0;
+}
+.icon-btn:hover { background: var(--surface2); }
+
+.container { max-width: 680px; margin: 0 auto; padding: 16px; }
+
+.search-wrap {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+  padding: 0 16px;
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 16px; height: 52px;
+}
+.search-wrap input {
+  border: none; background: none;
+  font-size: 15px; font-family: inherit;
+  color: var(--text); width: 100%; outline: none;
+}
+.search-wrap input::placeholder { color: var(--text3); }
+.search-icon { color: var(--text3); font-size: 18px; }
+
+.hero-card {
+  background: linear-gradient(135deg, #1a73e8 0%, #4285f4 50%, #6ea6ff 100%);
+  border-radius: var(--radius-lg);
+  padding: 24px; color: white;
+  margin-bottom: 16px; position: relative; overflow: hidden;
+  box-shadow: 0 4px 20px rgba(26,115,232,0.35);
+}
+.hero-card::before {
+  content: ''; position: absolute;
+  top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  background: rgba(255,255,255,0.08); border-radius: 50%;
+}
+.hero-label { font-size: 12px; font-weight: 700; opacity: 0.75; text-transform: uppercase; letter-spacing: 1px; }
+.hero-name { font-size: 20px; font-weight: 800; margin: 4px 0 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 90px; }
+.hero-date { font-size: 13px; opacity: 0.8; }
+.hero-days {
+  position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+  text-align: center; z-index: 1; min-width: 72px;
+  background: rgba(255,255,255,0.18); border-radius: 14px; padding: 8px 10px;
+}
+.hero-days-num { font-size: 32px; font-weight: 800; line-height: 1; }
+.hero-days-label { font-size: 11px; opacity: 0.85; font-weight: 700; }
+
+.section-title {
+  font-size: 13px; font-weight: 700; color: var(--text2);
+  text-transform: uppercase; letter-spacing: 0.8px; margin: 20px 0 10px;
+}
+
+.add-card {
+  background: var(--surface); border-radius: var(--radius-lg);
+  padding: 20px; box-shadow: var(--card-shadow); margin-bottom: 16px;
+}
+.form-row { display: flex; gap: 10px; }
+.form-group { flex: 1; }
+.form-label {
+  font-size: 12px; font-weight: 700; color: var(--text2);
+  text-transform: uppercase; letter-spacing: 0.5px;
+  display: block; margin-bottom: 6px;
+}
+.form-input {
+  width: 100%; padding: 12px 14px;
+  border: 2px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface2); color: var(--text);
+  font-family: inherit; font-size: 15px; font-weight: 600;
+  outline: none; transition: border-color 0.2s, box-shadow 0.2s; margin-bottom: 12px;
+}
+.form-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26,115,232,0.12); }
+.category-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.pill {
+  padding: 7px 14px; border-radius: 20px;
+  border: 2px solid var(--border); background: none;
+  font-family: inherit; font-size: 13px; font-weight: 700;
+  color: var(--text2); cursor: pointer; transition: all 0.15s; margin: 0;
+}
+.pill.active { border-color: var(--primary); background: var(--primary-light); color: var(--primary); }
+.pill:hover:not(.active) { border-color: #bbb; }
+.btn-add {
+  width: 100%; padding: 14px; border: none; border-radius: var(--radius-sm);
+  background: var(--primary); color: white; font-family: inherit;
+  font-size: 15px; font-weight: 800; cursor: pointer;
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(26,115,232,0.35); margin: 0;
+}
+.btn-add:hover { background: var(--primary-dark); box-shadow: 0 4px 14px rgba(26,115,232,0.45); }
+.btn-add:active { transform: scale(0.98); }
+
+.person-card {
+  background: var(--surface); border-radius: var(--radius);
+  padding: 16px; margin-bottom: 10px; box-shadow: var(--card-shadow);
+  display: flex; align-items: center; gap: 14px;
+  transition: box-shadow 0.2s, transform 0.15s; cursor: pointer; position: relative;
+}
+.person-card:hover { box-shadow: var(--card-shadow-hover); transform: translateY(-1px); }
+.avatar {
+  width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 800; flex-shrink: 0; color: white;
+}
+.person-info { flex: 1; min-width: 0; }
+.person-name { font-size: 17px; font-weight: 800; color: var(--text); }
+.person-date { font-size: 13px; color: var(--text2); margin-top: 1px; }
+.person-note { font-size: 12px; color: var(--text3); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.person-right { text-align: right; flex-shrink: 0; }
+.days-badge {
+  display: inline-block; padding: 6px 12px; border-radius: 20px;
+  font-size: 13px; font-weight: 800; margin-bottom: 4px;
+}
+.days-badge.today { background: var(--badge-today-bg); color: var(--badge-today-c); }
+.days-badge.soon { background: var(--badge-soon-bg); color: var(--badge-soon-c); }
+.days-badge.week { background: var(--badge-week-bg); color: var(--badge-week-c); }
+.days-badge.month { background: var(--badge-month-bg); color: var(--badge-month-c); }
+.days-badge.later { background: var(--primary-light); color: var(--primary); }
+.cat-tag { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; }
+.person-delete-mobile {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: none; background: var(--surface2); color: var(--text3);
+  font-size: 16px; cursor: pointer; display: flex;
+  align-items: center; justify-content: center;
+  transition: background 0.15s, color 0.15s; flex-shrink: 0; margin: 0; padding: 0;
+}
+.person-delete-mobile:hover { background: #fce8e6; color: var(--red); }
+
+.empty { text-align: center; padding: 48px 24px; color: var(--text3); }
+.empty-icon { font-size: 56px; margin-bottom: 14px; }
+.empty-title { font-size: 18px; font-weight: 700; color: var(--text2); margin-bottom: 6px; }
+
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  z-index: 200; display: none; align-items: flex-end; justify-content: center;
+  backdrop-filter: blur(3px);
+}
+.modal-overlay.open { display: flex; }
+.modal-sheet {
+  background: var(--surface); border-radius: 24px 24px 0 0;
+  padding: 28px 24px 36px; width: 100%; max-width: 680px;
+  max-height: 90vh; overflow-y: auto;
+  animation: slideUp 0.3s ease;
+}
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 20px; }
+.modal-title { font-size: 20px; font-weight: 800; margin-bottom: 16px; }
+
+.ai-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.ai-badge {
+  background: linear-gradient(135deg, #4285f4, #a142f4); color: white;
+  font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 8px; letter-spacing: 0.5px;
+}
+.ai-loading { display: flex; gap: 6px; align-items: center; padding: 12px 0; }
+.dot { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; animation: bounce 1.2s ease-in-out infinite; }
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce { 0%,80%,100% { transform: scale(0.8); opacity: 0.5; } 40% { transform: scale(1.2); opacity: 1; } }
+
+.gift-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.gift-item {
+  background: var(--surface2); border-radius: var(--radius-sm);
+  padding: 14px 12px; font-size: 13px; font-weight: 600; color: var(--text);
+  border: 2px solid transparent; cursor: pointer;
+  transition: border-color 0.15s, background 0.15s; text-align: center; line-height: 1.4;
+}
+.gift-item:hover { border-color: var(--primary); background: var(--primary-light); }
+.gift-item .gift-emoji { font-size: 24px; display: block; margin-bottom: 6px; }
+
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--surface); border-top: 1px solid var(--border);
+  display: flex; z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+.nav-item {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 10px 0; border: none; background: none; cursor: pointer;
+  color: var(--text3); font-family: inherit; font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px; gap: 4px; transition: color 0.15s; margin: 0;
+}
+.nav-item.active { color: var(--primary); }
+.nav-item .nav-icon { font-size: 22px; }
+
+.tab-bar { display: flex; gap: 8px; margin-bottom: 14px; overflow-x: auto; scrollbar-width: none; }
+.tab-bar::-webkit-scrollbar { display: none; }
+.tab {
+  padding: 8px 16px; border-radius: 20px; border: 2px solid var(--border);
+  background: none; font-family: inherit; font-size: 13px; font-weight: 700;
+  color: var(--text2); cursor: pointer; white-space: nowrap; transition: all 0.15s; margin: 0;
+}
+.tab.active { border-color: var(--primary); background: var(--primary-light); color: var(--primary); }
+
+.action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.action-card {
+  background: var(--surface2); border-radius: var(--radius);
+  padding: 20px 16px; text-align: center; cursor: pointer;
+  border: 2px solid var(--border); font-family: inherit;
+  transition: background 0.15s, box-shadow 0.15s; margin: 0;
+}
+.action-card:hover { background: var(--primary-light); box-shadow: var(--card-shadow); }
+.action-card .action-icon { font-size: 32px; display: block; margin-bottom: 8px; }
+.action-card .action-label { font-size: 14px; font-weight: 700; color: var(--text); }
+.action-card .action-desc { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+.reminder-card {
+  background: var(--reminder-bg);
+  border: 1px solid var(--reminder-border); border-radius: var(--radius);
+  padding: 16px; margin-bottom: 10px; display: flex; gap: 12px; align-items: flex-start;
+}
+.reminder-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+.reminder-name { font-weight: 800; font-size: 14px; }
+.reminder-sub { color: var(--text2); font-size: 13px; margin-top: 2px; line-height: 1.5; }
+
+.backup-status {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--backup-bg); border-radius: var(--radius-sm);
+  padding: 12px 14px; margin-bottom: 14px;
+}
+.backup-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+.backup-info { font-size: 13px; color: var(--backup-c); font-weight: 700; }
+.backup-sub { font-size: 11px; color: var(--backup-sub); }
+
+.toast {
+  position: fixed; bottom: 80px; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #202124; color: white;
+  padding: 12px 20px; border-radius: 24px;
+  font-size: 14px; font-weight: 600; z-index: 300;
+  opacity: 0; transition: opacity 0.25s, transform 0.25s;
+  white-space: nowrap; pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.scroll-pad { height: 80px; }
+.appbar, .add-card, .person-card, .modal-sheet, .bottom-nav, .search-wrap, .form-input, .pill, .tab, .action-card, .gift-item, .reminder-card, .backup-status, .days-badge {
+  transition: background 0.3s, border-color 0.3s, color 0.3s, box-shadow 0.3s;
+}
+@media (max-width: 420px) { .form-row { flex-direction: column; } }
+
+/* ── PIN LOCK SCREEN ── */
+.pin-overlay {
+  position: fixed; inset: 0; z-index: 999;
+  background: var(--bg);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 32px 24px;
+  transition: opacity 0.3s;
+}
+.pin-overlay.hidden { opacity: 0; pointer-events: none; }
+.pin-logo {
+  width: 72px; height: 72px;
+  background: linear-gradient(135deg, #1a73e8, #4285f4);
+  border-radius: 22px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px;
+  box-shadow: 0 4px 20px rgba(26,115,232,0.4);
+  margin-bottom: 20px;
+}
+.pin-title { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.pin-subtitle { font-size: 14px; color: var(--text3); margin-bottom: 32px; text-align: center; }
+.pin-dots { display: flex; gap: 16px; margin-bottom: 32px; }
+.pin-dot {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 2px solid var(--border);
+  background: transparent;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+.pin-dot.filled { background: var(--primary); border-color: var(--primary); transform: scale(1.1); }
+.pin-dot.error { background: var(--red); border-color: var(--red); animation: shake 0.4s ease; }
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+.pin-keypad { display: grid; grid-template-columns: repeat(3, 72px); gap: 14px; }
+.pin-key {
+  width: 72px; height: 72px; border-radius: 50%;
+  border: none; background: var(--surface); color: var(--text);
+  font-family: inherit; font-size: 22px; font-weight: 800;
+  cursor: pointer; box-shadow: var(--card-shadow);
+  transition: background 0.15s, transform 0.1s;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 1px; padding: 0; margin: 0;
+}
+.pin-key:active { transform: scale(0.92); background: var(--primary-light); }
+.pin-key.del { background: transparent; box-shadow: none; font-size: 20px; }
+.pin-key.del:active { background: var(--surface2); }
+.pin-key-sub { font-size: 9px; font-weight: 600; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; }
+.pin-error-msg { font-size: 13px; color: var(--red); font-weight: 700; margin-top: 16px; min-height: 20px; text-align: center; }
+.pin-setting-row {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--surface2); border-radius: var(--radius-sm);
+  padding: 14px 16px; margin-bottom: 10px;
+}
+.pin-setting-label { font-size: 15px; font-weight: 700; color: var(--text); }
+.pin-setting-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
+.toggle { position: relative; width: 48px; height: 28px; flex-shrink: 0; }
+.toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+.toggle-track {
+  position: absolute; inset: 0;
+  background: var(--border); border-radius: 14px;
+  cursor: pointer; transition: background 0.2s;
+}
+.toggle input:checked + .toggle-track { background: var(--primary); }
+.toggle-track::after {
+  content: ''; position: absolute; top: 3px; left: 3px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: white; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+.toggle input:checked + .toggle-track::after { transform: translateX(20px); }
+
+/* ── PHOTO ── */
+.photo-picker {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 14px;
+}
+.photo-preview {
+  width: 64px; height: 64px; border-radius: 50%;
+  object-fit: cover; flex-shrink: 0;
+  border: 2px solid var(--border);
+}
+.photo-placeholder {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: var(--surface2); border: 2px dashed var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; flex-shrink: 0; cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  position: relative; overflow: hidden;
+}
+.photo-placeholder:hover { border-color: var(--primary); background: var(--primary-light); }
+.photo-btn {
+  flex: 1; padding: 10px 14px; border-radius: var(--radius-sm);
+  border: 2px solid var(--border); background: var(--surface2);
+  color: var(--text2); font-family: inherit; font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all 0.15s; text-align: left; margin: 0;
+}
+.photo-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+.avatar-img {
+  width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+}
+
+/* ── FIREBASE AUTH ── */
+.auth-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: var(--bg);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 32px 24px;
+  transition: opacity 0.3s;
+}
+.auth-overlay.hidden { opacity: 0; pointer-events: none; display: none; }
+.auth-logo {
+  width: 80px; height: 80px;
+  background: linear-gradient(135deg, #1a73e8, #4285f4);
+  border-radius: 24px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 40px;
+  box-shadow: 0 4px 24px rgba(26,115,232,0.4);
+  margin-bottom: 24px;
+}
+.auth-title { font-size: 28px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+.auth-subtitle { font-size: 15px; color: var(--text2); margin-bottom: 40px; text-align: center; line-height: 1.5; }
+.btn-google {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 24px; border-radius: var(--radius);
+  border: 2px solid var(--border); background: var(--surface);
+  font-family: inherit; font-size: 16px; font-weight: 700;
+  color: var(--text); cursor: pointer; width: 100%; max-width: 320px;
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 0.2s, transform 0.1s;
+  margin: 0;
+}
+.btn-google:hover { box-shadow: var(--card-shadow-hover); transform: translateY(-1px); }
+.btn-google:active { transform: scale(0.98); }
+.google-icon { width: 24px; height: 24px; flex-shrink: 0; }
+
+/* User info in appbar */
+.user-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  object-fit: cover; cursor: pointer;
+  border: 2px solid var(--primary);
+}
+.user-avatar-placeholder {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--primary); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; cursor: pointer;
+  border: 2px solid var(--primary);
+}
+.sync-badge {
+  display: flex; align-items: center; gap: 6px;
+  background: #e6f4ea; border-radius: 20px;
+  padding: 4px 10px; font-size: 12px; font-weight: 700; color: var(--green);
+  margin-bottom: 10px;
+}
+.sync-badge.syncing { background: var(--primary-light); color: var(--primary); }
+
+</style>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc, getDoc, onSnapshot }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDNYFBwHBp6eRo9YjOrImEpCWClqnPlqwo",
+    authDomain: "birthday-plus-6e14d.firebaseapp.com",
+    projectId: "birthday-plus-6e14d",
+    storageBucket: "birthday-plus-6e14d.firebasestorage.app",
+    messagingSenderId: "677297371671",
+    appId: "1:677297371671:web:569fd7e1f58e22842afa52"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // Expose to global scope
+  window._fbAuth = auth;
+  window._fbDb = db;
+  window._fbDoc = doc;
+  window._fbSetDoc = setDoc;
+  window._fbGetDoc = getDoc;
+  window._fbOnSnapshot = onSnapshot;
+  window._fbGoogleProvider = new GoogleAuthProvider();
+  window._fbSignInWithPopup = signInWithPopup;
+  window._fbSignOut = signOut;
+  window._fbOnAuthStateChanged = onAuthStateChanged;
+  window._firebaseReady = true;
+
+  // Auth state listener
+  onAuthStateChanged(auth, (user) => {
+    window._currentUser = user;
+    if (typeof window.onAuthStateChange === 'function') {
+      window.onAuthStateChange(user);
+    }
+  });
+</script>
+</head>
+<body>
+
+<div class="appbar">
+  <div class="appbar-left">
+    <div class="app-icon">🎂</div>
+    <div class="app-title">Birthday<span>+</span></div>
+  </div>
+  <div class="appbar-actions">
+    <button class="icon-btn" id="themeToggle" onclick="toggleTheme()" title="Motyw">🌙</button>
+    <div id="userAvatarBtn" onclick="openUserMenu()" style="cursor:pointer;display:flex;align-items:center"></div>
+    <button class="icon-btn" onclick="openAIReminder()" title="AI">🧠</button>
+    <button class="icon-btn" onclick="openModal('exportModal');initPinSettingsUI();initApiKeyUI()" title="Opcje">⚙️</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="search-wrap" style="margin-top:16px">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Szukaj osoby..." oninput="onSearch()" onkeyup="onSearch()" onchange="onSearch()" autocomplete="off" autocorrect="off" autocapitalize="off">
+  </div>
+
+  <div id="heroSection"></div>
+
+  <div class="tab-bar" id="filterTabs">
+    <button class="tab active" onclick="setFilter('Wszystkie', this)">Wszystkie</button>
+    <button class="tab" onclick="setFilter('Rodzina', this)">👨‍👩‍👧 Rodzina</button>
+    <button class="tab" onclick="setFilter('Znajomi', this)">👥 Znajomi</button>
+    <button class="tab" onclick="setFilter('Praca', this)">💼 Praca</button>
+    <button class="tab" onclick="setFilter('Inne', this)">📦 Inne</button>
+  </div>
+
+  <div class="add-card" id="addCard">
+    <div class="section-title">Dodaj osobę</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Imię i nazwisko</label>
+        <input class="form-input" type="text" id="name" placeholder="np. Anna Kowalska">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Data urodzin</label>
+        <input class="form-input" type="date" id="birthday">
+      </div>
+    </div>
+    <label class="form-label">Kategoria</label>
+    <div class="category-pills">
+      <button class="pill active" onclick="selectCat(this,'Rodzina')">👨‍👩‍👧 Rodzina</button>
+      <button class="pill" onclick="selectCat(this,'Znajomi')">👥 Znajomi</button>
+      <button class="pill" onclick="selectCat(this,'Praca')">💼 Praca</button>
+      <button class="pill" onclick="selectCat(this,'Inne')">📦 Inne</button>
+    </div>
+    <label class="form-label">Notatka (opcjonalna)</label>
+    <input class="form-input" type="text" id="note" placeholder="np. Lubi książki, podróże...">
+    <label class="form-label">Zdjęcie (opcjonalne)</label>
+    <div class="photo-picker">
+      <div class="photo-placeholder" id="addPhotoPreviewWrap" onclick="document.getElementById('addPhotoInput').click()">
+        <span id="addPhotoEmoji">📷</span>
+        <img id="addPhotoPreview" style="display:none;width:64px;height:64px;border-radius:50%;object-fit:cover;position:absolute;top:0;left:0">
+      </div>
+      <button class="photo-btn" onclick="document.getElementById('addPhotoInput').click()">📷 Wybierz zdjęcie<br><span style="font-size:11px;color:var(--text3);font-weight:600">Kliknij aby wybrać z galerii</span></button>
+      <input type="file" id="addPhotoInput" accept="image/*" style="display:none" onchange="onAddPhotoChange(event)">
+    </div>
+    <button class="btn-add" onclick="addPerson()">＋ Dodaj osobę</button>
+  </div>
+
+  <div class="section-title" id="listLabel">Urodziny</div>
+  <div id="list"></div>
+  <div class="scroll-pad"></div>
+</div>
+
+<!-- AUTH OVERLAY -->
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-logo">🎂</div>
+  <div class="auth-title">Birthday+</div>
+  <div class="auth-subtitle">Zaloguj się przez Google aby synchronizować urodziny między urządzeniami</div>
+  <button class="btn-google" onclick="signInWithGoogle()">
+    <svg class="google-icon" viewBox="0 0 24 24">
+      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+      <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+    </svg>
+    Zaloguj się przez Google
+  </button>
+  <div style="margin-top:20px;font-size:12px;color:var(--text3);text-align:center">Twoje dane będą synchronizowane<br>bezpiecznie w chmurze Google</div>
+</div>
+
+<div class="bottom-nav">
+  <button class="nav-item active" onclick="switchTab(this)">
+    <span class="nav-icon">🏠</span>Lista
+  </button>
+  <button class="nav-item" onclick="switchTab(this);openAIGifts()">
+    <span class="nav-icon">🎁</span>Prezenty
+  </button>
+  <button class="nav-item" onclick="switchTab(this);openAIReminder()">
+    <span class="nav-icon">🧠</span>AI
+  </button>
+  <button class="nav-item" onclick="switchTab(this);openModal('exportModal');initPinSettingsUI();initApiKeyUI()">
+    <span class="nav-icon">⚙️</span>Opcje
+  </button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- MODAL: EKSPORT/IMPORT/BACKUP -->
+<div class="modal-overlay" id="exportModal" onclick="closeModalOutside(event,'exportModal')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <button onclick="closeModal('exportModal')" style="width:36px;height:36px;border-radius:50%;border:none;background:var(--surface2);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0;margin:0">‹</button>
+      <div style="font-size:20px;font-weight:800">⚙️ Opcje i Backup</div>
+    </div>
+    <div class="backup-status">
+      <div class="backup-dot"></div>
+      <div>
+        <div class="backup-info">Dane zapisane lokalnie</div>
+        <div class="backup-sub" id="backupDate">Ostatni zapis: —</div>
+      </div>
+    </div>
+    <div class="section-title">Klucz API 🤖</div>
+    <div style="background:var(--surface2);border-radius:var(--radius-sm);padding:14px;margin-bottom:10px">
+      <div style="font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Klucz Anthropic API</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input class="form-input" type="password" id="apiKeyInput" placeholder="sk-ant-..." style="margin-bottom:0;flex:1;font-size:13px" oninput="saveApiKey()">
+        <button onclick="toggleApiKeyVisibility()" id="apiKeyEye" style="width:40px;height:44px;border:2px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:18px;cursor:pointer;flex-shrink:0;margin:0;padding:0">👁️</button>
+      </div>
+      <div style="font-size:11px;color:var(--text3);margin-top:8px;line-height:1.5">Klucz jest zapisywany lokalnie na urządzeniu. Uzyskasz go na <strong style="color:var(--primary)">console.anthropic.com</strong></div>
+    </div>
+    <div class="section-title">Eksport danych</div>
+    <div class="action-grid">
+      <button class="action-card" onclick="exportJSON()">
+        <span class="action-icon">📄</span>
+        <div class="action-label">Eksportuj JSON</div>
+        <div class="action-desc">Kopia zapasowa</div>
+      </button>
+      <button class="action-card" onclick="exportCSV()">
+        <span class="action-icon">📊</span>
+        <div class="action-label">Eksportuj CSV</div>
+        <div class="action-desc">Otwórz w Excelu</div>
+      </button>
+    </div>
+    <div class="section-title">Import danych</div>
+    <div class="action-grid">
+      <button class="action-card" onclick="document.getElementById('importFile').click()">
+        <span class="action-icon">📥</span>
+        <div class="action-label">Importuj JSON</div>
+        <div class="action-desc">Wczytaj kopię</div>
+      </button>
+      <button class="action-card" onclick="backupNow()">
+        <span class="action-icon">☁️</span>
+        <div class="action-label">Kopiuj dane</div>
+        <div class="action-desc">Zapisz do schowka</div>
+      </button>
+    </div>
+    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
+    <div class="section-title" style="margin-top:16px">Bezpieczeństwo 🔐</div>
+    <div class="pin-setting-row">
+      <div>
+        <div class="pin-setting-label">Blokada PIN</div>
+        <div class="pin-setting-sub" id="pinStatusText">Wyłączona</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="pinToggle" onchange="onPinToggleChange()">
+        <div class="toggle-track"></div>
+      </label>
+    </div>
+    <div class="pin-setting-row" id="changePinRow" style="display:none;cursor:pointer" onclick="openChangePinFlow()">
+      <div>
+        <div class="pin-setting-label">🔑 Zmień PIN</div>
+        <div class="pin-setting-sub">Ustaw nowy 4-cyfrowy kod</div>
+      </div>
+      <span style="font-size:20px;color:var(--text3)">›</span>
+    </div>
+    <div class="section-title" style="margin-top:16px;color:var(--red)">Niebezpieczna strefa</div>
+    <button class="btn-add" style="background:#ea4335;box-shadow:0 2px 8px rgba(234,67,53,0.3)" onclick="clearAll()">🗑️ Usuń wszystkie dane</button>
+  </div>
+</div>
+
+<!-- MODAL: AI PREZENTY -->
+<div class="modal-overlay" id="giftsModal" onclick="closeModalOutside(event,'giftsModal')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="ai-header">
+      <div class="modal-title" style="margin-bottom:0">🎁 Pomysły na prezenty</div>
+      <div class="ai-badge">AI</div>
+    </div>
+    <label class="form-label" style="margin-top:8px">Wybierz osobę</label>
+    <select class="form-input" id="giftPersonSelect" onchange="clearGifts()">
+      <option value="">— wybierz —</option>
+    </select>
+    <label class="form-label">Budżet</label>
+    <div class="category-pills" id="budgetPills">
+      <button class="pill active" onclick="selectBudget(this,'do 50 zł')">do 50 zł</button>
+      <button class="pill" onclick="selectBudget(this,'50–150 zł')">50–150 zł</button>
+      <button class="pill" onclick="selectBudget(this,'150–500 zł')">150–500 zł</button>
+      <button class="pill" onclick="selectBudget(this,'500+ zł')">500+ zł</button>
+    </div>
+    <button class="btn-add" onclick="generateGifts()" id="giftBtn">✨ Generuj pomysły</button>
+    <div id="giftResults" style="margin-top:16px"></div>
+  </div>
+</div>
+
+<!-- MODAL: AI PRZYPOMNIENIA -->
+<div class="modal-overlay" id="reminderModal" onclick="closeModalOutside(event,'reminderModal')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="ai-header">
+      <div class="modal-title" style="margin-bottom:0">🧠 AI Asystent</div>
+      <div class="ai-badge">AI</div>
+    </div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:16px">Analizuję Twoje urodziny i podpowiem co warto wiedzieć i zaplanować.</p>
+    <button class="btn-add" onclick="generateReminders()" id="reminderBtn">🔍 Analizuj urodziny</button>
+    <div id="reminderResults" style="margin-top:16px"></div>
+  </div>
+</div>
+
+<!-- MODAL: SZCZEGÓŁY -->
+<div class="modal-overlay" id="detailModal" onclick="closeModalOutside(event,'detailModal')">
+  <div class="modal-sheet" id="detailContent"></div>
+</div>
+
+<script>
+let people = JSON.parse(localStorage.getItem('bp_people')) || [];
+let _unsubscribeFirestore = null;
+
+// ── FIREBASE AUTH & SYNC ──
+function onAuthStateChange(user) {
+  const authOverlay = document.getElementById('authOverlay');
+  const userAvatarBtn = document.getElementById('userAvatarBtn');
+
+  if (user) {
+    // Logged in — hide auth overlay
+    authOverlay.classList.add('hidden');
+
+    // Show user avatar in appbar
+    if (user.photoURL) {
+      userAvatarBtn.innerHTML = `<img src="${user.photoURL}" class="user-avatar" alt="avatar">`;
+    } else {
+      const initials = user.displayName ? user.displayName.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase() : '?';
+      userAvatarBtn.innerHTML = `<div class="user-avatar-placeholder">${initials}</div>`;
+    }
+
+    // Now check PIN (after login)
+    if (isPinEnabled()) {
+      pinMode = 'unlock';
+      document.getElementById('pinSubtitle').textContent = 'Wprowadź PIN';
+      showPinOverlay();
+    }
+
+    // Start Firestore sync
+    startFirestoreSync(user.uid);
+  } else {
+    // Not logged in — show auth overlay
+    authOverlay.classList.remove('hidden');
+    userAvatarBtn.innerHTML = '';
+    if (_unsubscribeFirestore) { _unsubscribeFirestore(); _unsubscribeFirestore = null; }
+  }
+}
+
+function waitForFirebase(cb) {
+  if (window._firebaseReady && window._fbAuth) { cb(); }
+  else { setTimeout(() => waitForFirebase(cb), 100); }
+}
+
+function signInWithGoogle() {
+  waitForFirebase(() => {
+    window._fbSignInWithPopup(window._fbAuth, window._fbGoogleProvider)
+      .catch(err => showToast('⚠️ Błąd logowania: ' + err.message));
+  });
+}
+
+function signOutUser() {
+  waitForFirebase(() => {
+    window._fbSignOut(window._fbAuth).then(() => {
+      closeModal('userMenuModal');
+      showToast('👋 Wylogowano');
+    });
+  });
+}
+
+function openUserMenu() {
+  const user = window._currentUser;
+  if (!user) { signInWithGoogle(); return; }
+  document.getElementById('menuUserName').textContent = user.displayName || 'Użytkownik';
+  document.getElementById('menuUserEmail').textContent = user.email || '';
+  const avatarEl = document.getElementById('menuUserAvatar');
+  if (user.photoURL) {
+    avatarEl.innerHTML = `<img src="${user.photoURL}" style="width:56px;height:56px;object-fit:cover">`;
+  } else {
+    const ini = user.displayName ? user.displayName.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase() : '?';
+    avatarEl.textContent = ini;
+  }
+  openModal('userMenuModal');
+}
+
+function startFirestoreSync(uid) {
+  waitForFirebase(() => {
+    const docRef = window._fbDoc(window._fbDb, 'users', uid);
+
+    // First load data from Firestore
+    window._fbGetDoc(docRef).then(snap => {
+      if (snap.exists()) {
+        const data = snap.data();
+        if (data.people && Array.isArray(data.people)) {
+          people = data.people;
+          localStorage.setItem('bp_people', JSON.stringify(people));
+          render();
+        }
+      }
+    });
+
+    // Then listen for real-time changes
+    _unsubscribeFirestore = window._fbOnSnapshot(docRef, (snap) => {
+      if (snap.exists()) {
+        const data = snap.data();
+        if (data.people && Array.isArray(data.people)) {
+          // Only update if different (avoid loop)
+          if (JSON.stringify(data.people) !== JSON.stringify(people)) {
+            people = data.people;
+            localStorage.setItem('bp_people', JSON.stringify(people));
+            render();
+            setSyncStatus('synced');
+          }
+        }
+      }
+    });
+  });
+}
+
+function saveToFirestore() {
+  const user = window._currentUser;
+  if (!user || !window._firebaseReady) return;
+  setSyncStatus('syncing');
+  const docRef = window._fbDoc(window._fbDb, 'users', user.uid);
+  window._fbSetDoc(docRef, { people, updatedAt: new Date().toISOString() })
+    .then(() => setSyncStatus('synced'))
+    .catch(() => setSyncStatus('error'));
+}
+
+function setSyncStatus(status) {
+  const el = document.getElementById('syncStatus');
+  if (!el) return;
+  if (status === 'syncing') {
+    el.className = 'sync-badge syncing';
+    el.innerHTML = '<span>🔄</span><span>Synchronizuję...</span>';
+  } else if (status === 'synced') {
+    el.className = 'sync-badge';
+    el.innerHTML = '<span>✅</span><span>Zsynchronizowano</span>';
+  } else {
+    el.className = 'sync-badge';
+    el.innerHTML = '<span>⚠️</span><span>Błąd synchronizacji</span>';
+    el.style.background = '#fce8e6'; el.style.color = 'var(--red)';
+  }
+}
+
+// ── THEME ──
+function applyTheme(dark) {
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  document.getElementById('themeToggle').textContent = dark ? '☀️' : '🌙';
+  localStorage.setItem('bp_theme', dark ? 'dark' : 'light');
+}
+function toggleTheme() {
+  applyTheme(document.documentElement.getAttribute('data-theme') !== 'dark');
+}
+(function initTheme() {
+  const saved = localStorage.getItem('bp_theme');
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  applyTheme(saved ? saved === 'dark' : prefersDark);
+})();
+let selectedCategory = 'Rodzina';
+let pendingDeleteId = null;
+let selectedBudget = 'do 50 zł';
+let filterCat = 'Wszystkie';
+
+function save() {
+  localStorage.setItem('bp_people', JSON.stringify(people));
+  localStorage.setItem('bp_backup_date', new Date().toLocaleString('pl-PL'));
+  updateBackupDate();
+  saveToFirestore();
+}
+
+function updateBackupDate() {
+  const d = localStorage.getItem('bp_backup_date');
+  const el = document.getElementById('backupDate');
+  if (el && d) el.textContent = 'Ostatni zapis: ' + d;
+}
+
+function daysLeft(ds) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const b = new Date(ds);
+  let next = new Date(today.getFullYear(), b.getMonth(), b.getDate());
+  if (next < today) next.setFullYear(today.getFullYear() + 1);
+  return Math.ceil((next - today) / 86400000);
+}
+
+function age(ds) {
+  const b = new Date(ds), t = new Date();
+  let a = t.getFullYear() - b.getFullYear();
+  if (t.getMonth() < b.getMonth() || (t.getMonth() === b.getMonth() && t.getDate() < b.getDate())) a--;
+  return a;
+}
+
+function nextAge(ds) {
+  const b = new Date(ds), t = new Date();
+  // How old will they be at their NEXT birthday
+  const nextBirthdayYear = (t.getMonth() > b.getMonth() ||
+    (t.getMonth() === b.getMonth() && t.getDate() >= b.getDate()))
+    ? t.getFullYear() + 1
+    : t.getFullYear();
+  return nextBirthdayYear - b.getFullYear();
+}
+
+function formatDate(ds) {
+  return new Date(ds).toLocaleDateString('pl-PL', { day: 'numeric', month: 'long' });
+}
+
+function avatarColor(name) {
+  const colors = ['#1a73e8','#34a853','#ea4335','#fa7b17','#a142f4','#00bcd4','#e91e63','#ff5722'];
+  let h = 0;
+  for (let c of name) h = (h << 5) - h + c.charCodeAt(0);
+  return colors[Math.abs(h) % colors.length];
+}
+
+function initials(name) {
+  return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+}
+
+function daysBadge(days) {
+  if (days === 0) return ['today', '🎉 Dziś!'];
+  if (days <= 3) return ['soon', '🔥 za ' + days + ' dni'];
+  if (days <= 7) return ['week', 'za ' + days + ' dni'];
+  if (days <= 30) return ['month', 'za ' + days + ' dni'];
+  return ['later', 'za ' + days + ' dni'];
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function selectCat(btn, cat) {
+  document.querySelectorAll('.category-pills .pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active'); selectedCategory = cat;
+}
+
+function selectBudget(btn, budget) {
+  document.querySelectorAll('#budgetPills .pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active'); selectedBudget = budget;
+}
+
+function addPerson() {
+  const name = document.getElementById('name').value.trim();
+  const birthday = document.getElementById('birthday').value;
+  const note = document.getElementById('note').value.trim();
+  if (!name || !birthday) { showToast('⚠️ Uzupełnij imię i datę'); return; }
+  const photo = window._addPhotoData || null;
+  people.push({ name, birthday, category: selectedCategory, note, photo, id: Date.now() });
+  save(); render();
+  document.getElementById('name').value = '';
+  document.getElementById('birthday').value = '';
+  document.getElementById('note').value = '';
+  window._addPhotoData = null;
+  document.getElementById('addPhotoEmoji').style.display = '';
+  document.getElementById('addPhotoPreview').style.display = 'none';
+  document.getElementById('addPhotoPreview').src = '';
+  showToast('✅ Dodano ' + name);
+}
+
+function removePerson(id) {
+  const person = people.find(p => p.id === id);
+  if (!person) return;
+  pendingDeleteId = id;
+  document.getElementById('confirmDeleteName').textContent = person.name;
+  openModal('confirmDeleteModal');
+}
+
+function confirmDeletePerson() {
+  if (!pendingDeleteId) return;
+  people = people.filter(p => p.id !== pendingDeleteId);
+  pendingDeleteId = null;
+  save(); render();
+  closeModal('confirmDeleteModal');
+  closeModal('detailModal');
+  showToast('🗑️ Usunięto osobę');
+}
+
+function clearAll() {
+  if (!confirm('Na pewno usunąć wszystkie dane?')) return;
+  people = []; save(); render(); closeModal('exportModal');
+  showToast('🗑️ Wyczyszczono dane');
+}
+
+function setFilter(cat, btn) {
+  filterCat = cat;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active'); render();
+}
+
+function onSearch() {
+  const search = document.getElementById('searchInput').value.trim();
+  const addCard = document.getElementById('addCard');
+  if (search) {
+    filterCat = 'Wszystkie';
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelector('.tab').classList.add('active');
+    if (addCard) addCard.style.display = 'none';
+  } else {
+    if (addCard) addCard.style.display = '';
+  }
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function render() {
+  const search = document.getElementById('searchInput').value.toLowerCase().trim();
+  let filtered = [...people]
+    .sort((a,b) => daysLeft(a.birthday) - daysLeft(b.birthday))
+    .filter(p => filterCat === 'Wszystkie' || p.category === filterCat)
+    .filter(p => !search
+      || p.name.toLowerCase().includes(search)
+      || (p.note && p.note.toLowerCase().includes(search))
+      || p.category.toLowerCase().includes(search));
+
+  const heroSection = document.getElementById('heroSection');
+  const next = people.length ? [...people].sort((a,b) => daysLeft(a.birthday)-daysLeft(b.birthday))[0] : null;
+  if (next && !search) {
+    const d = daysLeft(next.birthday);
+    heroSection.innerHTML = `<div class="hero-card">
+      <div class="hero-label">Najbliższe urodziny</div>
+      <div class="hero-name">${next.name}</div>
+      <div class="hero-date">📅 ${formatDate(next.birthday)} · ${age(next.birthday)} lat</div>
+      <div class="hero-days">
+        <div class="hero-days-num">${d}</div>
+        <div class="hero-days-label">${d === 1 ? 'dzień' : 'dni'}</div>
+      </div>
+    </div>`;
+  } else { heroSection.innerHTML = ''; }
+
+  const list = document.getElementById('list');
+  if (!filtered.length) {
+    list.innerHTML = `<div class="empty">
+      <div class="empty-icon">🎈</div>
+      <div class="empty-title">${search ? 'Brak wyników' : 'Brak osób'}</div>
+      <div style="font-size:14px">${search ? 'Spróbuj innej frazy' : 'Dodaj pierwszą osobę powyżej'}</div>
+    </div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(p => {
+    const d = daysLeft(p.birthday);
+    const [cls, label] = daysBadge(d);
+    const col = avatarColor(p.name);
+    const avatarHtml = p.photo
+      ? `<div class="avatar" style="background:${col};padding:0"><img class="avatar-img" src="${p.photo}"></div>`
+      : `<div class="avatar" style="background:${col}">${initials(p.name)}</div>`;
+    return `<div class="person-card" onclick="openDetail(${p.id})">
+      ${avatarHtml}
+      <div class="person-info">
+        <div class="person-name">${p.name}</div>
+        <div class="person-date">🎂 ${formatDate(p.birthday)} · ${age(p.birthday)} lat</div>
+        ${p.note ? `<div class="person-note">💬 ${p.note}</div>` : ''}
+      </div>
+      <div class="person-right">
+        <div class="days-badge ${cls}">${label}</div>
+        <div class="cat-tag">${p.category}</div>
+      </div>
+      <button class="person-delete-mobile" onclick="event.stopPropagation();removePerson(${p.id})">✕</button>
+    </div>`;
+  }).join('');
+
+  document.getElementById('listLabel').textContent = 'Urodziny (' + filtered.length + ')';
+}
+
+function openDetail(id) {
+  const p = people.find(x => x.id === id);
+  if (!p) return;
+  const d = daysLeft(p.birthday);
+  const col = avatarColor(p.name);
+  document.getElementById('detailContent').innerHTML = `
+    <div class="modal-handle"></div>
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
+      <div style="position:relative;flex-shrink:0">
+        ${p.photo
+          ? `<div class="avatar" style="background:${col};width:72px;height:72px;font-size:26px;padding:0"><img class="avatar-img" src="${p.photo}"></div>`
+          : `<div class="avatar" style="background:${col};width:72px;height:72px;font-size:26px">${initials(p.name)}</div>`
+        }
+        <button onclick="triggerPhotoChange(${id})" style="position:absolute;bottom:-2px;right:-2px;width:26px;height:26px;border-radius:50%;border:2px solid var(--surface);background:var(--primary);color:white;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;margin:0" title="Zmień zdjęcie">✏️</button>
+      </div>
+      <div>
+        <div style="font-size:22px;font-weight:800">${p.name}</div>
+        <div style="color:var(--text2);font-size:14px">${p.category}</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+      <div style="background:var(--surface2);border-radius:12px;padding:14px;text-align:center">
+        <div style="font-size:28px;font-weight:800;color:var(--primary)">${d}</div>
+        <div style="font-size:11px;color:var(--text3);font-weight:700;text-transform:uppercase;margin-top:2px">Dni do urodzin</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:12px;padding:14px;text-align:center">
+        <div style="font-size:28px;font-weight:800;color:var(--green)">${age(p.birthday)}</div>
+        <div style="font-size:11px;color:var(--text3);font-weight:700;text-transform:uppercase;margin-top:2px">Obecny wiek</div>
+      </div>
+    </div>
+    <div style="background:var(--surface2);border-radius:12px;padding:14px;margin-bottom:12px">
+      <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;margin-bottom:4px">Data urodzin</div>
+      <div style="font-size:16px;font-weight:700">📅 ${formatDate(p.birthday)}</div>
+    </div>
+    ${p.note ? `<div style="background:var(--surface2);border-radius:12px;padding:14px;margin-bottom:12px">
+      <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;margin-bottom:4px">Notatka</div>
+      <div style="font-size:14px">💬 ${p.note}</div>
+    </div>` : ''}
+    <div style="display:flex;gap:10px;margin-bottom:10px">
+      <button class="btn-add" style="flex:1" onclick="openEditPerson(${id})">✏️ Edytuj</button>
+      <button class="btn-add" style="flex:1" onclick="closeModal('detailModal');openGiftsForPerson(${id})">🎁 Prezent</button>
+      <button class="btn-add" style="flex:0 0 52px;background:#ea4335;box-shadow:none;font-size:18px;padding:0" onclick="removePerson(${id})">🗑️</button>
+    </div>`;
+  openModal('detailModal');
+}
+
+// EXPORT / IMPORT
+function exportJSON() {
+  const blob = new Blob([JSON.stringify(people, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'birthday-plus-backup.json';
+  a.click(); showToast('📄 Eksportowano JSON');
+}
+
+function exportCSV() {
+  const rows = ['"Imię","Data urodzin","Kategoria","Notatka"']
+    .concat(people.map(p => `"${p.name}","${p.birthday}","${p.category}","${p.note || ''}"`));
+  const blob = new Blob(['\uFEFF' + rows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'birthday-plus.csv';
+  a.click(); showToast('📊 Eksportowano CSV');
+}
+
+function importJSON(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (!Array.isArray(data)) throw new Error();
+      const imported = data.map(p => ({
+        name: p.name || 'Nieznany', birthday: p.birthday || '',
+        category: p.category || 'Inne', note: p.note || '',
+        id: p.id || Date.now() + Math.random()
+      })).filter(p => p.birthday);
+      people = [...people, ...imported];
+      save(); render(); closeModal('exportModal');
+      showToast('✅ Zaimportowano ' + imported.length + ' osób');
+    } catch { showToast('⚠️ Błąd pliku JSON'); }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+function backupNow() {
+  navigator.clipboard.writeText(JSON.stringify(people, null, 2))
+    .then(() => showToast('☁️ Skopiowano do schowka'))
+    .catch(() => showToast('⚠️ Nie udało się skopiować'));
+}
+
+// AI GIFTS
+function openAIGifts() {
+  const sel = document.getElementById('giftPersonSelect');
+  sel.innerHTML = '<option value="">— wybierz —</option>';
+  people.forEach(p => { sel.innerHTML += `<option value="${p.id}">${p.name}</option>`; });
+  openModal('giftsModal');
+}
+
+function openGiftsForPerson(id) {
+  openAIGifts();
+  setTimeout(() => { document.getElementById('giftPersonSelect').value = id; }, 100);
+}
+
+function clearGifts() { document.getElementById('giftResults').innerHTML = ''; }
+
+async function generateGifts() {
+  const selId = parseInt(document.getElementById('giftPersonSelect').value);
+  const person = people.find(p => p.id === selId);
+  if (!person) { showToast('⚠️ Wybierz osobę'); return; }
+  if (!getApiKey()) { showToast('⚠️ Wpisz klucz API w Opcjach'); return; }
+  const results = document.getElementById('giftResults');
+  const btn = document.getElementById('giftBtn');
+  btn.disabled = true; btn.textContent = '⏳ Generuję...';
+  results.innerHTML = '<div class="ai-loading"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+  const prompt = `Jesteś ekspertem od prezentów. Zaproponuj 6 konkretnych pomysłów na prezent dla: ${person.name}, kategoria: ${person.category}, notatka: "${person.note || 'brak'}", kończy ${nextAge(person.birthday)} lat, budżet: ${selectedBudget}. Odpowiedz TYLKO w formacie JSON bez markdown: [{"emoji":"...","name":"...","desc":"..."}]`;
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true', 'x-api-key': getApiKey() },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await resp.json();
+    if (data.error) throw new Error(data.error.message);
+    let text = data.content.map(i => i.text || '').join('').replace(/```json|```/g, '').trim();
+    const gifts = JSON.parse(text);
+    results.innerHTML = `<div class="section-title">Propozycje dla ${person.name}</div><div class="gift-grid">${gifts.map(g =>
+      `<div class="gift-item"><span class="gift-emoji">${g.emoji}</span><strong>${g.name}</strong><br><span style="font-size:11px;color:var(--text3)">${g.desc}</span></div>`
+    ).join('')}</div>`;
+  } catch(err) {
+    results.innerHTML = `<div style="color:var(--red);padding:12px;font-size:14px">⚠️ Błąd: ${err.message}</div>`;
+  }
+  btn.disabled = false; btn.textContent = '✨ Generuj ponownie';
+}
+
+// AI REMINDERS
+function openAIReminder() {
+  document.getElementById('reminderResults').innerHTML = '';
+  const btn = document.getElementById('reminderBtn');
+  btn.disabled = false; btn.textContent = '🔍 Analizuj urodziny';
+  openModal('reminderModal');
+}
+
+async function generateReminders() {
+  if (!people.length) { showToast('⚠️ Brak osób na liście'); return; }
+  if (!getApiKey()) { showToast('⚠️ Wpisz klucz API w Opcjach'); return; }
+  const btn = document.getElementById('reminderBtn');
+  btn.disabled = true; btn.textContent = '⏳ Analizuję...';
+  const results = document.getElementById('reminderResults');
+  results.innerHTML = '<div class="ai-loading"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+  const list = people.map(p => `${p.name} (${p.category}): ${formatDate(p.birthday)}, za ${daysLeft(p.birthday)} dni, będzie mieć ${nextAge(p.birthday)} lat`).join('\n');
+  const prompt = `Jesteś pomocnym asystentem urodzinowym. Lista urodzin:\n${list}\n\nDzisiaj: ${new Date().toLocaleDateString('pl-PL')}.\n\nDaj 4-5 konkretnych, ciepłych porad/przypomnień po polsku. Odpowiedz TYLKO JSON bez markdown: [{"icon":"...","title":"...","text":"..."}]`;
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true', 'x-api-key': getApiKey() },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await resp.json();
+    if (data.error) throw new Error(data.error.message);
+    let text = data.content.map(i => i.text || '').join('').replace(/```json|```/g, '').trim();
+    const reminders = JSON.parse(text);
+    results.innerHTML = reminders.map(r => `<div class="reminder-card">
+      <div class="reminder-icon">${r.icon}</div>
+      <div><div class="reminder-name">${r.title}</div><div class="reminder-sub">${r.text}</div></div>
+    </div>`).join('');
+  } catch(err) {
+    results.innerHTML = `<div style="color:var(--red);padding:12px;font-size:14px">⚠️ Błąd: ${err.message}</div>`;
+  }
+  btn.disabled = false; btn.textContent = '🔄 Analizuj ponownie';
+}
+
+// MODALS
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function closeModalOutside(e, id) { if (e.target.id === id) closeModal(id); }
+function switchTab(btn) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+updateBackupDate();
+render();
+
+// ══════════════════════════════════════
+//  PIN LOGIC
+// ══════════════════════════════════════
+let pinBuffer = '';
+let pinMode = 'unlock'; // unlock | set-new | set-confirm | change-old | change-new | change-confirm
+let pinTempNew = '';
+
+function getPinHash(pin) {
+  // simple obfuscation — not cryptographic, but better than plaintext
+  let h = 0;
+  for (let i = 0; i < pin.length; i++) h = (Math.imul(31, h) + pin.charCodeAt(i)) | 0;
+  return h.toString(36) + pin.length;
+}
+
+function getSavedPin() { return localStorage.getItem('bp_pin'); }
+function isPinEnabled() { return !!getSavedPin(); }
+
+function initPinScreen() {
+  const pinToggle = document.getElementById('pinToggle');
+  const changePinRow = document.getElementById('changePinRow');
+  const pinStatusText = document.getElementById('pinStatusText');
+  const enabled = isPinEnabled();
+  if (pinToggle) pinToggle.checked = enabled;
+  if (changePinRow) changePinRow.style.display = enabled ? 'flex' : 'none';
+  if (pinStatusText) pinStatusText.textContent = enabled ? 'Włączona' : 'Wyłączona';
+
+  // Only show PIN after user is already logged in via Google
+  if (isPinEnabled() && window._currentUser) {
+    pinMode = 'unlock';
+    document.getElementById('pinSubtitle').textContent = 'Wprowadź PIN';
+    showPinOverlay();
+  } else {
+    hidePinOverlay();
+  }
+}
+
+function showPinOverlay() {
+  pinBuffer = '';
+  updatePinDots();
+  document.getElementById('pinErrorMsg').textContent = '';
+  document.getElementById('pinOverlay').classList.remove('hidden');
+}
+
+function hidePinOverlay() {
+  document.getElementById('pinOverlay').classList.add('hidden');
+}
+
+function updatePinDots() {
+  for (let i = 0; i < 4; i++) {
+    const dot = document.getElementById('pd' + i);
+    dot.classList.toggle('filled', i < pinBuffer.length);
+    dot.classList.remove('error');
+  }
+}
+
+function pinKey(digit) {
+  if (pinBuffer.length >= 4) return;
+  pinBuffer += digit;
+  updatePinDots();
+  if (pinBuffer.length === 4) {
+    setTimeout(() => handlePinComplete(), 120);
+  }
+}
+
+function pinDel() {
+  if (pinBuffer.length > 0) {
+    pinBuffer = pinBuffer.slice(0, -1);
+    updatePinDots();
+  }
+}
+
+function showPinError(msg) {
+  document.getElementById('pinErrorMsg').textContent = msg;
+  for (let i = 0; i < 4; i++) {
+    const dot = document.getElementById('pd' + i);
+    dot.classList.add('error');
+    dot.classList.remove('filled');
+  }
+  setTimeout(() => {
+    pinBuffer = '';
+    updatePinDots();
+    document.getElementById('pinErrorMsg').textContent = '';
+  }, 900);
+}
+
+
+function handlePinComplete() {
+  if (pinMode === 'disable-confirm') {
+    if (getPinHash(pinBuffer) === getSavedPin()) {
+      localStorage.removeItem('bp_pin');
+      hidePinOverlay();
+      initPinSettingsUI();
+      showToast('🔓 PIN wyłączony');
+    } else {
+      showPinError('Nieprawidłowy PIN');
+      document.getElementById('pinToggle').checked = true;
+    }
+    return;
+  }
+  if (pinMode === 'unlock') {
+    if (getPinHash(pinBuffer) === getSavedPin()) {
+      hidePinOverlay();
+    } else {
+      showPinError('Nieprawidłowy PIN');
+    }
+  } else if (pinMode === 'set-new') {
+    pinTempNew = pinBuffer;
+    pinMode = 'set-confirm';
+    pinBuffer = '';
+    updatePinDots();
+    document.getElementById('pinSubtitle').textContent = 'Potwierdź nowy PIN';
+    document.getElementById('pinErrorMsg').textContent = '';
+  } else if (pinMode === 'set-confirm') {
+    if (pinBuffer === pinTempNew) {
+      localStorage.setItem('bp_pin', getPinHash(pinBuffer));
+      hidePinOverlay();
+      initPinSettingsUI();
+      showToast('✅ PIN ustawiony');
+    } else {
+      showPinError('PINy się nie zgadzają');
+      pinMode = 'set-new';
+      pinTempNew = '';
+      setTimeout(() => { document.getElementById('pinSubtitle').textContent = 'Ustaw nowy PIN (4 cyfry)'; }, 950);
+    }
+  } else if (pinMode === 'change-old') {
+    if (getPinHash(pinBuffer) === getSavedPin()) {
+      pinMode = 'change-new';
+      pinBuffer = '';
+      updatePinDots();
+      document.getElementById('pinSubtitle').textContent = 'Wprowadź nowy PIN';
+    } else {
+      showPinError('Nieprawidłowy PIN');
+    }
+  } else if (pinMode === 'change-new') {
+    pinTempNew = pinBuffer;
+    pinMode = 'change-confirm';
+    pinBuffer = '';
+    updatePinDots();
+    document.getElementById('pinSubtitle').textContent = 'Potwierdź nowy PIN';
+  } else if (pinMode === 'change-confirm') {
+    if (pinBuffer === pinTempNew) {
+      localStorage.setItem('bp_pin', getPinHash(pinBuffer));
+      hidePinOverlay();
+      initPinSettingsUI();
+      showToast('✅ PIN zmieniony');
+    } else {
+      showPinError('PINy się nie zgadzają');
+      pinMode = 'change-new';
+      pinTempNew = '';
+      setTimeout(() => { document.getElementById('pinSubtitle').textContent = 'Wprowadź nowy PIN'; }, 950);
+    }
+  }
+}
+
+function openChangePinFlow() {
+  closeModal('exportModal');
+  pinMode = 'change-old';
+  pinTempNew = '';
+  document.getElementById('pinSubtitle').textContent = 'Podaj obecny PIN';
+  showPinOverlay();
+}
+
+function initPinSettingsUI() {
+  const pinToggle = document.getElementById('pinToggle');
+  const changePinRow = document.getElementById('changePinRow');
+  const pinStatusText = document.getElementById('pinStatusText');
+  const enabled = isPinEnabled();
+  if (pinToggle) pinToggle.checked = enabled;
+  if (changePinRow) changePinRow.style.display = enabled ? 'flex' : 'none';
+  if (pinStatusText) pinStatusText.textContent = enabled ? 'Włączona' : 'Wyłączona';
+}
+
+function onPinToggleChange() {
+  const checked = document.getElementById('pinToggle').checked;
+  if (checked) {
+    pinMode = 'set-new';
+    pinTempNew = '';
+    document.getElementById('pinSubtitle').textContent = 'Ustaw nowy PIN (4 cyfry)';
+    showPinOverlay();
+  } else {
+    if (isPinEnabled()) {
+      pinMode = 'disable-confirm';
+      document.getElementById('pinSubtitle').textContent = 'Podaj PIN aby wyłączyć';
+      showPinOverlay();
+    }
+  }
+}
+
+
+// ── API KEY ──
+function getApiKey() { return localStorage.getItem('bp_api_key') || ''; }
+function saveApiKey() {
+  const val = document.getElementById('apiKeyInput').value.trim();
+  localStorage.setItem('bp_api_key', val);
+}
+function toggleApiKeyVisibility() {
+  const input = document.getElementById('apiKeyInput');
+  const btn = document.getElementById('apiKeyEye');
+  if (input.type === 'password') { input.type = 'text'; btn.textContent = '🙈'; }
+  else { input.type = 'password'; btn.textContent = '👁️'; }
+}
+function initApiKeyUI() {
+  const input = document.getElementById('apiKeyInput');
+  if (input) input.value = getApiKey();
+}
+
+
+// ── EDIT PERSON ──
+let _editCategory = '';
+
+function openEditPerson(id) {
+  const p = people.find(x => x.id === id);
+  if (!p) return;
+  window._editId = id;
+  _editCategory = p.category;
+
+  // Fill form
+  document.getElementById('editName').value = p.name;
+  document.getElementById('editBirthday').value = p.birthday;
+  document.getElementById('editNote').value = p.note || '';
+
+  // Category pills
+  document.querySelectorAll('#editCategoryPills .pill').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.includes(p.category));
+  });
+
+  // Avatar preview
+  const wrap = document.getElementById('editAvatarWrap');
+  const col = avatarColor(p.name);
+  wrap.style.background = col;
+  if (p.photo) {
+    wrap.innerHTML = `<img src="${p.photo}" style="width:64px;height:64px;object-fit:cover">`;
+  } else {
+    wrap.innerHTML = initials(p.name);
+  }
+  window._editPhotoData = p.photo || null;
+
+  closeModal('detailModal');
+  openModal('editModal');
+}
+
+function selectEditCat(btn, cat) {
+  document.querySelectorAll('#editCategoryPills .pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  _editCategory = cat;
+}
+
+function triggerEditPhoto() {
+  document.getElementById('editPhotoInput').click();
+}
+
+function onEditPhotoChange(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  resizePhoto(file, function(dataUrl) {
+    window._editPhotoData = dataUrl;
+    const wrap = document.getElementById('editAvatarWrap');
+    wrap.innerHTML = `<img src="${dataUrl}" style="width:64px;height:64px;object-fit:cover">`;
+  });
+}
+
+function saveEditPerson() {
+  const name = document.getElementById('editName').value.trim();
+  const birthday = document.getElementById('editBirthday').value;
+  const note = document.getElementById('editNote').value.trim();
+  if (!name || !birthday) { showToast('⚠️ Uzupełnij imię i datę'); return; }
+
+  const person = people.find(p => p.id === window._editId);
+  if (!person) return;
+
+  person.name = name;
+  person.birthday = birthday;
+  person.category = _editCategory || person.category;
+  person.note = note;
+  if (window._editPhotoData !== undefined) person.photo = window._editPhotoData;
+
+  save(); render();
+  closeModal('editModal');
+  openDetail(window._editId);
+  showToast('✅ Zapisano zmiany');
+}
+
+// ── PHOTO ──
+function onAddPhotoChange(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  resizePhoto(file, function(dataUrl) {
+    window._addPhotoData = dataUrl;
+    const preview = document.getElementById('addPhotoPreview');
+    const emoji = document.getElementById('addPhotoEmoji');
+    preview.src = dataUrl;
+    preview.style.display = 'block';
+    emoji.style.display = 'none';
+  });
+}
+
+function triggerPhotoChange(id) {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.onchange = function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    resizePhoto(file, function(dataUrl) {
+      const person = people.find(p => p.id === id);
+      if (!person) return;
+      person.photo = dataUrl;
+      save();
+      render();
+      openDetail(id); // refresh detail view
+    });
+  };
+  input.click();
+}
+
+function removePhoto(id) {
+  const person = people.find(p => p.id === id);
+  if (!person) return;
+  person.photo = null;
+  save(); render(); openDetail(id);
+}
+
+function resizePhoto(file, callback) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      const size = 200;
+      canvas.width = size; canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      // crop to square center
+      const min = Math.min(img.width, img.height);
+      const sx = (img.width - min) / 2;
+      const sy = (img.height - min) / 2;
+      ctx.drawImage(img, sx, sy, min, min, 0, 0, size, size);
+      callback(canvas.toDataURL('image/jpeg', 0.75));
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+</script>
+
+<!-- PIN LOCK OVERLAY -->
+<div class="pin-overlay hidden" id="pinOverlay">
+  <div class="pin-logo">🎂</div>
+  <div class="pin-title">Birthday+</div>
+  <div class="pin-subtitle" id="pinSubtitle">Wprowadź PIN</div>
+  <div class="pin-dots" id="pinDots">
+    <div class="pin-dot" id="pd0"></div>
+    <div class="pin-dot" id="pd1"></div>
+    <div class="pin-dot" id="pd2"></div>
+    <div class="pin-dot" id="pd3"></div>
+  </div>
+  <div class="pin-keypad">
+    <button class="pin-key" onclick="pinKey('1')">1</button>
+    <button class="pin-key" onclick="pinKey('2')">2<span class="pin-key-sub">ABC</span></button>
+    <button class="pin-key" onclick="pinKey('3')">3<span class="pin-key-sub">DEF</span></button>
+    <button class="pin-key" onclick="pinKey('4')">4<span class="pin-key-sub">GHI</span></button>
+    <button class="pin-key" onclick="pinKey('5')">5<span class="pin-key-sub">JKL</span></button>
+    <button class="pin-key" onclick="pinKey('6')">6<span class="pin-key-sub">MNO</span></button>
+    <button class="pin-key" onclick="pinKey('7')">7<span class="pin-key-sub">PQRS</span></button>
+    <button class="pin-key" onclick="pinKey('8')">8<span class="pin-key-sub">TUV</span></button>
+    <button class="pin-key" onclick="pinKey('9')">9<span class="pin-key-sub">WXYZ</span></button>
+    <div></div>
+    <button class="pin-key" onclick="pinKey('0')">0</button>
+    <button class="pin-key del" onclick="pinDel()">⌫</button>
+  </div>
+  <div class="pin-error-msg" id="pinErrorMsg"></div>
+</div>
+
+<!-- MODAL: POTWIERDŹ USUNIĘCIE -->
+<div class="modal-overlay" id="confirmDeleteModal" onclick="closeModalOutside(event,'confirmDeleteModal')">
+  <div class="modal-sheet" style="padding-bottom:24px">
+    <div class="modal-handle"></div>
+    <div style="text-align:center;padding:8px 0 20px">
+      <div style="font-size:52px;margin-bottom:12px">🗑️</div>
+      <div style="font-size:20px;font-weight:800;color:var(--text);margin-bottom:8px">Usunąć osobę?</div>
+      <div style="font-size:15px;color:var(--text2)">Czy na pewno chcesz usunąć<br><strong id="confirmDeleteName" style="color:var(--text)"></strong>?</div>
+      <div style="font-size:13px;color:var(--text3);margin-top:6px">Tej operacji nie można cofnąć.</div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn-add" style="flex:1;background:var(--surface2);color:var(--text);box-shadow:none;border:2px solid var(--border)" onclick="closeModal('confirmDeleteModal');pendingDeleteId=null">Anuluj</button>
+      <button class="btn-add" style="flex:1;background:#ea4335;box-shadow:0 2px 8px rgba(234,67,53,0.3)" onclick="confirmDeletePerson()">Usuń</button>
+    </div>
+  </div>
+</div>
+<script>
+// Run after full DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  initPinScreen();
+  // Show auth overlay if Firebase not ready yet - will hide when auth state resolves
+  waitForFirebase(() => {
+    window._fbOnAuthStateChanged(window._fbAuth, onAuthStateChange);
+  });
+});
+</script>
+
+<!-- MODAL: EDYTUJ OSOBĘ -->
+<div class="modal-overlay" id="editModal" onclick="closeModalOutside(event,'editModal')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+      <button onclick="closeModal('editModal');openDetail(window._editId)" style="width:36px;height:36px;border-radius:50%;border:none;background:var(--surface2);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0;margin:0">‹</button>
+      <div style="font-size:20px;font-weight:800">✏️ Edytuj osobę</div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+      <div style="position:relative;flex-shrink:0">
+        <div id="editAvatarWrap" onclick="triggerEditPhoto()" style="width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:white;cursor:pointer;overflow:hidden"></div>
+        <button onclick="triggerEditPhoto()" style="position:absolute;bottom:-2px;right:-2px;width:24px;height:24px;border-radius:50%;border:2px solid var(--surface);background:var(--primary);color:white;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;margin:0">📷</button>
+        <input type="file" id="editPhotoInput" accept="image/*" style="display:none" onchange="onEditPhotoChange(event)">
+      </div>
+      <div style="font-size:14px;color:var(--text2)">Kliknij avatar aby zmienić zdjęcie</div>
+    </div>
+
+    <label class="form-label">Imię i nazwisko</label>
+    <input class="form-input" type="text" id="editName" placeholder="np. Anna Kowalska">
+
+    <label class="form-label">Data urodzin</label>
+    <input class="form-input" type="date" id="editBirthday">
+
+    <label class="form-label">Kategoria</label>
+    <div class="category-pills" id="editCategoryPills">
+      <button class="pill" onclick="selectEditCat(this,'Rodzina')">👨‍👩‍👧 Rodzina</button>
+      <button class="pill" onclick="selectEditCat(this,'Znajomi')">👥 Znajomi</button>
+      <button class="pill" onclick="selectEditCat(this,'Praca')">💼 Praca</button>
+      <button class="pill" onclick="selectEditCat(this,'Inne')">📦 Inne</button>
+    </div>
+
+    <label class="form-label">Notatka</label>
+    <input class="form-input" type="text" id="editNote" placeholder="np. Lubi książki, podróże...">
+
+    <button class="btn-add" onclick="saveEditPerson()">💾 Zapisz zmiany</button>
+  </div>
+</div>
+
+<!-- MODAL: USER MENU -->
+<div class="modal-overlay" id="userMenuModal" onclick="closeModalOutside(event,'userMenuModal')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">
+      <div id="menuUserAvatar" style="width:56px;height:56px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:white;overflow:hidden;flex-shrink:0"></div>
+      <div>
+        <div id="menuUserName" style="font-size:18px;font-weight:800;color:var(--text)"></div>
+        <div id="menuUserEmail" style="font-size:13px;color:var(--text2)"></div>
+      </div>
+    </div>
+    <div id="syncStatus" class="sync-badge" style="margin-bottom:16px">
+      <span>✅</span><span>Zsynchronizowano</span>
+    </div>
+    <button class="btn-add" style="background:#ea4335;box-shadow:0 2px 8px rgba(234,67,53,0.3)" onclick="signOutUser()">🚪 Wyloguj się</button>
+  </div>
+</div>
+</body>
+</html>
