@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Birthday+</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1a73e8">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Birthday+">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -702,7 +709,23 @@ body { background: var(--bg); color: var(--text); font-family: 'Nunito', sans-se
       </div>
       <span style="font-size:20px;color:var(--text3)">›</span>
     </div>
-    <div class="section-title" style="margin-top:16px;color:var(--red)">Niebezpieczna strefa</div>
+    <div class="section-title" style="margin-top:16px">Informacje</div>
+    <div class="pin-setting-row" style="cursor:pointer;margin-bottom:8px" onclick="closeModal('exportModal');openModal('tutorialModal')">
+      <div>
+        <div class="pin-setting-label">📖 Samouczek</div>
+        <div class="pin-setting-sub">Jak korzystać z aplikacji</div>
+      </div>
+      <span style="font-size:20px;color:var(--text3)">›</span>
+    </div>
+    <div class="pin-setting-row" style="cursor:pointer;margin-bottom:8px" onclick="closeModal('exportModal');openModal('privacyModal')">
+      <div>
+        <div class="pin-setting-label">🔒 Polityka prywatności</div>
+        <div class="pin-setting-sub">Jak przetwarzamy Twoje dane</div>
+      </div>
+      <span style="font-size:20px;color:var(--text3)">›</span>
+    </div>
+    <div style="font-size:11px;color:var(--text3);text-align:center;margin-bottom:16px">Birthday+ v1.0 · Made with ❤️</div>
+    <div class="section-title" style="margin-top:4px;color:var(--red)">Niebezpieczna strefa</div>
     <button class="btn-add" style="background:#ea4335;box-shadow:0 2px 8px rgba(234,67,53,0.3)" onclick="clearAll()">🗑️ Usuń wszystkie dane</button>
   </div>
 </div>
@@ -1742,6 +1765,119 @@ document.addEventListener('DOMContentLoaded', function() {
       <span>✅</span><span>Zsynchronizowano</span>
     </div>
     <button class="btn-add" style="background:#ea4335;box-shadow:0 2px 8px rgba(234,67,53,0.3)" onclick="signOutUser()">🚪 Wyloguj się</button>
+  </div>
+</div>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('sw.js')
+      .then(reg => console.log('SW registered'))
+      .catch(err => console.log('SW error:', err));
+  });
+}
+</script>
+
+<!-- MODAL: SAMOUCZEK -->
+<div class="modal-overlay" id="tutorialModal" onclick="closeModalOutside(event,'tutorialModal')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+      <button onclick="closeModal('tutorialModal');openModal('exportModal');initPinSettingsUI();initApiKeyUI()" style="width:36px;height:36px;border-radius:50%;border:none;background:var(--surface2);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0;margin:0">‹</button>
+      <div style="font-size:20px;font-weight:800">📖 Samouczek</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px">
+
+      <div style="background:var(--surface2);border-radius:var(--radius);padding:16px">
+        <div style="font-size:16px;font-weight:800;margin-bottom:8px">➕ Dodawanie osoby</div>
+        <div style="font-size:14px;color:var(--text2);line-height:1.6">Wypełnij formularz na stronie głównej — wpisz imię, datę urodzin, wybierz kategorię i opcjonalnie dodaj notatkę lub zdjęcie. Kliknij <strong>"Dodaj osobę"</strong>.</div>
+      </div>
+
+      <div style="background:var(--surface2);border-radius:var(--radius);padding:16px">
+        <div style="font-size:16px;font-weight:800;margin-bottom:8px">✏️ Edycja i usuwanie</div>
+        <div style="font-size:14px;color:var(--text2);line-height:1.6">Kliknij kartę osoby aby zobaczyć szczegóły. Stamtąd możesz <strong>edytować</strong> dane, zmienić zdjęcie lub <strong>usunąć</strong> osobę (z potwierdzeniem).</div>
+      </div>
+
+      <div style="background:var(--surface2);border-radius:var(--radius);padding:16px">
+        <div style="font-size:16px;font-weight:800;margin-bottom:8px">🎁 Pomysły na prezenty (AI)</div>
+        <div style="font-size:14px;color:var(--text2);line-height:1.6">Przejdź do zakładki <strong>Prezenty</strong>, wybierz osobę i budżet, kliknij "Generuj". Wymaga klucza Anthropic API (ustaw w Opcjach).</div>
+      </div>
+
+      <div style="background:var(--surface2);border-radius:var(--radius);padding:16px">
+        <div style="font-size:16px;font-weight:800;margin-bottom:8px">🧠 AI Asystent</div>
+        <div style="font-size:14px;color:var(--text2);line-height:1.6">Zakładka <strong>AI</strong> analizuje całą listę i daje spersonalizowane porady — kogo odwiedzić, co kupić z wyprzedzeniem, kto ma urodziny wkrótce.</div>
+      </div>
+
+      <div style="background:var(--surface2);border-radius:var(--radius);padding:16px">
+        <div style="font-size:16px;font-weight:800;margin-bottom:8px">☁️ Synchronizacja Google</div>
+        <div style="font-size:14px;color:var(--text2);line-height:1.6">Zaloguj się przez Google aby synchronizować dane między urządzeniami. Dane są zapisywane w Firebase Firestore w czasie rzeczywistym.</div>
+      </div>
+
+      <div style="background:var(--surface2);border-radius:var(--radius);padding:16px">
+        <div style="font-size:16px;font-weight:800;margin-bottom:8px">📤 Eksport i backup</div>
+        <div style="font-size:14px;color:var(--text2);line-height:1.6">W Opcjach możesz eksportować dane do <strong>JSON</strong> (kopia zapasowa) lub <strong>CSV</strong> (Excel). Import pozwala przywrócić dane z pliku JSON.</div>
+      </div>
+
+      <div style="background:var(--surface2);border-radius:var(--radius);padding:16px">
+        <div style="font-size:16px;font-weight:800;margin-bottom:8px">🔐 PIN i bezpieczeństwo</div>
+        <div style="font-size:14px;color:var(--text2);line-height:1.6">W Opcjach → Bezpieczeństwo możesz ustawić 4-cyfrowy PIN. Aplikacja będzie go wymagać przy każdym uruchomieniu po zalogowaniu Google.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: POLITYKA PRYWATNOŚCI -->
+<div class="modal-overlay" id="privacyModal" onclick="closeModalOutside(event,'privacyModal')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+      <button onclick="closeModal('privacyModal');openModal('exportModal');initPinSettingsUI();initApiKeyUI()" style="width:36px;height:36px;border-radius:50%;border:none;background:var(--surface2);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0;margin:0">‹</button>
+      <div style="font-size:20px;font-weight:800">🔒 Polityka prywatności</div>
+    </div>
+
+    <div style="font-size:13px;color:var(--text2);line-height:1.7;display:flex;flex-direction:column;gap:16px">
+
+      <div>
+        <div style="font-size:15px;font-weight:800;color:var(--text);margin-bottom:6px">1. Administrator danych</div>
+        <div>Aplikacja Birthday+ jest narzędziem osobistym. Dane przechowywane są na koncie Google użytkownika w usłudze Firebase Firestore (Google LLC).</div>
+      </div>
+
+      <div>
+        <div style="font-size:15px;font-weight:800;color:var(--text);margin-bottom:6px">2. Jakie dane zbieramy</div>
+        <div>Aplikacja przechowuje wyłącznie dane wprowadzone przez użytkownika: imiona i nazwiska osób, daty urodzin, kategorie, notatki oraz zdjęcia. Dane są przypisane do konta Google użytkownika.</div>
+      </div>
+
+      <div>
+        <div style="font-size:15px;font-weight:800;color:var(--text);margin-bottom:6px">3. Cel przetwarzania</div>
+        <div>Dane służą wyłącznie do wyświetlania listy urodzin i funkcji aplikacji (AI, prezenty, przypomnienia). Nie są udostępniane osobom trzecim ani wykorzystywane w celach marketingowych.</div>
+      </div>
+
+      <div>
+        <div style="font-size:15px;font-weight:800;color:var(--text);margin-bottom:6px">4. Przechowywanie danych</div>
+        <div>Dane są przechowywane lokalnie (localStorage) oraz w chmurze Firebase (gdy użytkownik jest zalogowany). Klucz API Anthropic przechowywany jest wyłącznie lokalnie na urządzeniu użytkownika.</div>
+      </div>
+
+      <div>
+        <div style="font-size:15px;font-weight:800;color:var(--text);margin-bottom:6px">5. Usuwanie danych</div>
+        <div>Użytkownik może usunąć wszystkie dane w dowolnym momencie przez Opcje → "Usuń wszystkie dane". Wylogowanie z Google nie usuwa danych z Firestore — należy to zrobić ręcznie.</div>
+      </div>
+
+      <div>
+        <div style="font-size:15px;font-weight:800;color:var(--text);margin-bottom:6px">6. Usługi zewnętrzne</div>
+        <div>Aplikacja korzysta z: <strong>Firebase (Google)</strong> — autoryzacja i baza danych; <strong>Anthropic Claude API</strong> — generowanie sugestii AI (dane wysyłane do API tylko na żądanie użytkownika).</div>
+      </div>
+
+      <div>
+        <div style="font-size:15px;font-weight:800;color:var(--text);margin-bottom:6px">7. Prawa użytkownika</div>
+        <div>Użytkownik ma prawo do wglądu, edycji i usunięcia swoich danych w dowolnym czasie bezpośrednio w aplikacji.</div>
+      </div>
+
+      <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:8px">
+        Ostatnia aktualizacja: maj 2026
+      </div>
+    </div>
   </div>
 </div>
 </body>
